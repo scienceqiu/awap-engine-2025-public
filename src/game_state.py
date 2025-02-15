@@ -69,6 +69,7 @@ class GameState:
         self.renderer = Renderer(self.map)
 
         self.FARMS = [BuildingType.FARM_1, BuildingType.FARM_2, BuildingType.FARM_3]
+        self.HEALERS = [UnitType.LAND_HEALER_1, UnitType.LAND_HEALER_2, UnitType.LAND_HEALER_2, UnitType.WATER_HEALER_1, UnitType.WATER_HEALER_2, UnitType.WATER_HEALER_2]
 
         self.previousBuildingsRed = None
         
