@@ -1153,6 +1153,10 @@ class RobotController:
             print('can_build_bridge(): invalid attacking unit id')
             return False
         
+        #robustly checks ally team control, but is tested for in the first check
+        if engineer.team != self.__team:
+            print('can_build_bridge(): can only control ally engineers')
+        
         if engineer.type != UnitType.ENGINEER:
             print('can_build_bridge(): unit is not an engineer')
             return False
@@ -1171,6 +1175,11 @@ class RobotController:
         if not self.can_build_bridge(engineer_id):
             return False
         
+        # Disband the engineer
+        if not self.disband_unit(engineer_id):
+            print("build_bridge(): Failed to disband engineer")
+            return False
+        
         engineer = self.__game_state.get_unit_from_id(engineer_id)
 
         # Change the tile to BRIDGE
@@ -1179,11 +1188,6 @@ class RobotController:
         # Record the map change
         self.__game_state.changed_maps.append(self.__game_state.map.to_2d_list())
         self.__game_state.changed_turns.append(self.__game_state.turn)
-
-        # Disband the engineer
-        if not self.disband_unit(engineer_id):
-            print("build_bridge(): Failed to disband engineer")
-            return False
 
         # print(f"Bridge successfully built at ({x}, {y}) by Engineer {engineer_id}")
         return True
@@ -1279,9 +1283,10 @@ class RobotController:
     Rat Functionalities
     -----------------------
     '''
-    def can_harm_farm(self, rat_id: int) -> bool:
+    def can_harm_farm(self, rat_id: int, farm_id: int) -> bool:
         '''
         Checks if the specified unit is a Rat and if it can harm farming resources.
+        Checks if the ally farm_id is specified
         '''
         if rat_id not in self.__game_state.units[self.__team]:
             print("can_harm_farm(): invalid rat_id")
@@ -1289,31 +1294,40 @@ class RobotController:
 
         rat_unit = self.__game_state.get_unit_from_id(rat_id)
 
+        farm_building = self.get_building_from_id(farm_id)
+        if farm_building is None:
+            print('can_harm_farm(): farm_id is not a valid farm')
+            return False
+        
+        if farm_building.type not in self.__game_state.FARMS:
+            print('can_harm_farm(): farm_id is not a valid farm')
+            return False
+        
+        if farm_building.team != self.__team:
+            print('can_harm_farm(): can only harm when on an ally farm')
+
         if rat_unit is None or rat_unit.type != UnitType.RAT:
             print("can_harm_farm(): unit is not a Rat")
+            return False
+        
+        if not (rat_unit.x == farm_building.x and rat_unit.y == farm_building.y):
+            print("can_harm_farm(): target building is not an ally farm")
             return False
 
         return True
 
-    def harm_farm(self, rat_id: int) -> bool:
+    def harm_farm(self, rat_id: int, farm_id: int) -> bool:
         '''
-        Applies Rat's farming penalties to both teams.
+        Applies Rat's farming penalties to both teams. Rat must be on an ally farm
         '''
-        if not self.can_harm_farm(rat_id):
+        #checks if rat is valid, given enemy farm is valid
+        if not self.can_harm_farm(rat_id, farm_id):
             return False
 
         # Apply penalties
-        self.__game_state.balance[self.get_enemy_team()] *= GameConstants.RAT_OWN_FARM_DAMAGE_MULTIPLIER
-        self.__game_state.balance[self.__team] *= GameConstants.RAT_OPPONENT_FARM_DAMAGE_MULTIPLIER
+        self.__game_state.balance[self.get_enemy_team()] *= GameConstants.RAT_OPPONENT_FARM_DAMAGE_MULTIPLIER
+        self.__game_state.balance[self.__team] *= GameConstants.RAT_OWN_FARM_DAMAGE_MULTIPLIER
 
         # Disband the Rat after effect is applied
         self.disband_unit(rat_id)
         return True
-
-    def auto_harm_farm(self):
-        '''
-        Automatically triggers all Rats on the team to apply farming penalties.
-        '''
-        for unit in self.__game_state.units[self.__team].values():
-            if unit.type == UnitType.RAT:
-                self.harm_farm(unit.id)
