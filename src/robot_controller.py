@@ -1153,6 +1153,10 @@ class RobotController:
             print('can_build_bridge(): invalid attacking unit id')
             return False
         
+        #robustly checks ally team control, but is tested for in the first check
+        if engineer.team != self.__team:
+            print('can_build_bridge(): can only control ally engineers')
+        
         if engineer.type != UnitType.ENGINEER:
             print('can_build_bridge(): unit is not an engineer')
             return False
@@ -1171,6 +1175,11 @@ class RobotController:
         if not self.can_build_bridge(engineer_id):
             return False
         
+        # Disband the engineer
+        if not self.disband_unit(engineer_id):
+            print("build_bridge(): Failed to disband engineer")
+            return False
+        
         engineer = self.__game_state.get_unit_from_id(engineer_id)
 
         # Change the tile to BRIDGE
@@ -1179,11 +1188,6 @@ class RobotController:
         # Record the map change
         self.__game_state.changed_maps.append(self.__game_state.map.to_2d_list())
         self.__game_state.changed_turns.append(self.__game_state.turn)
-
-        # Disband the engineer
-        if not self.disband_unit(engineer_id):
-            print("build_bridge(): Failed to disband engineer")
-            return False
 
         # print(f"Bridge successfully built at ({x}, {y}) by Engineer {engineer_id}")
         return True
