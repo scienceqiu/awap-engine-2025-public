@@ -276,7 +276,7 @@ class RobotController:
         if building.team != self.__team:
             return False
 
-        #checks if building can spawn unit_type
+        #checks if building can spawn unit_type (farms can spawn most ground units)
         if unit_type.spawnable_buildings is not None and building.type not in unit_type.spawnable_buildings:
             return False
         
@@ -318,6 +318,10 @@ class RobotController:
         
         #checks for enough funds
         if self.__game_state.balance[self.__team] < building_type.cost:
+            return False
+        
+        #explorer building must be built 10 blocks away from main castle
+        if building_type == BuildingType.EXPLORER_BUILDING and self.get_chebyshev_distance(x, y, self.__game_state.map.castle_locs[self.__team][0], self.__game_state.map.castle_locs[self.__team][1]) <= 10:
             return False
         
         return True

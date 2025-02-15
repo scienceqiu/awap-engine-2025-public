@@ -36,7 +36,7 @@ class BotPlayer(Player):
         ally_buildings = rc.get_buildings(team)
         for building in ally_buildings:
             if building.type == BuildingType.MAIN_CASTLE:
-                ally_castle_id = rc.get_id_from_building(building)[0]
+                ally_castle_id = rc.get_id_from_building(building)[1]
                 unit_type = random.randint(1, 4)
                 if unit_type == 1:
                     if rc.can_spawn_unit(UnitType.KNIGHT, ally_castle_id):
@@ -51,7 +51,7 @@ class BotPlayer(Player):
                     if rc.can_spawn_unit(UnitType.LAND_HEALER_1, ally_castle_id):
                         rc.spawn_unit(UnitType.LAND_HEALER_1, ally_castle_id)
             if building.type == BuildingType.PORT:
-                ally_castle_id = rc.get_id_from_building(building)[0]
+                ally_castle_id = rc.get_id_from_building(building)[1]
                 unit_type = random.randint(1, 3)
                 if unit_type == 1:
                     if rc.can_spawn_unit(UnitType.SAILOR, ally_castle_id):
@@ -72,7 +72,7 @@ class BotPlayer(Player):
         enemy_buildings = rc.get_buildings(enemy)
         for building in enemy_buildings:
             if building.type == BuildingType.MAIN_CASTLE:
-                enemy_castle_id = rc.get_id_from_building(building)[0]
+                enemy_castle_id = rc.get_id_from_building(building)[1]
                 enemy_castle = rc.get_building_from_id(enemy_castle_id)
                 if enemy_castle is None: 
                     continue
