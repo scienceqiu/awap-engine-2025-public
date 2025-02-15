@@ -271,5 +271,11 @@ class Game:
 
                 return winner
             
+
+        self.export_replay(self.output_path)
+
+        if self.render:
+            self.game_state.render()
+            
         return self.calculate_winner()
             
