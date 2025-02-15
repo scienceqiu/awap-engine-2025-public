@@ -49,7 +49,9 @@ To create a bot, add a new file to `/bots`.
 
 Run the above command to add the original updated repository if you have not done this already.
 
+`git fetch upstream main`
+
 `git rebase upstream/main`
 
-Run the above command to install current patches and bug fixes locally.
+Run the above commands to install current patches and bug fixes locally.
 
