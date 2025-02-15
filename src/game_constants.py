@@ -194,6 +194,8 @@ class UnitType (Enum):
     WATER_HEALER_3 = (10, 5, 2, 1, 0, 1, 1, 2, 1, 7, [BuildingType.PORT], [Tile.WATER, Tile.BRIDGE])
 
 
+    RAT = (5, 10, 0, 1, 0, 0, 1, 2, 0, 0, [BuildingType.MAIN_CASTLE], [Tile.GRASS, Tile.SAND, Tile.BRIDGE, Tile.MOUNTAIN, Tile.WATER])
+
 
 
 
