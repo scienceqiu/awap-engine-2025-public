@@ -74,6 +74,7 @@ class Game:
 
     def record_turn(self, turn_data: Dict):
         """Record data of the current turn into the replay."""
+        # print(f'turn_data: {turn_data['game_state']['buildings']}')
         self.replay.append(turn_data)
 
     def export_replay(self, filename: str):
@@ -129,7 +130,7 @@ class Game:
 
         # record last turn for replay file (health of one should be 0)
         turn_data = {
-            "turn_number": len(self.replay), 
+            "turn_number": len(self.replay)+1, 
             "game_state": self.game_state.to_dict(),  
         }
 
@@ -210,8 +211,8 @@ class Game:
         red_success = self.call_player_code(Team.RED)
 
         if not blue_success and not red_success:  # Both failed
-            
             return self.calculate_winner()
+        
         if not blue_success: # Blue failed
             print('RED WINS')
             return Team.RED
@@ -229,7 +230,7 @@ class Game:
         
 
         turn_data = {
-            "turn_number": len(self.replay), # Removed + 1 because the map now takes up one spot
+            "turn_number": len(self.replay) + 1, # Removed + 1 because the map now takes up one spot
             "game_state": self.game_state.to_dict(),  
         }
 

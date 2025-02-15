@@ -479,12 +479,15 @@ class GameState:
         self.previousBuildingsRed = redBuildings
         self.previousBuildingsBlue = blueBuildings
 
-    def get_previous_state(self):
+    def get_previous_state(self, team_lost: Team):
         '''Right before using the previous buildings to export to json, set the health to 0'''
-        for dictionary in self.previousBuildingsRed:
-            dictionary["health"] = 0
-        for dictionary in self.previousBuildingsBlue:
-            dictionary["health"] = 0
+        if team_lost == Team.RED:
+            for dictionary in self.previousBuildingsRed:
+                dictionary["health"] = 0
+
+        if team_lost == Team.BLUE:
+            for dictionary in self.previousBuildingsBlue:
+                dictionary["health"] = 0
 
     def to_dict(self):
         """
@@ -492,14 +495,16 @@ class GameState:
         """
         
         blueBuildings = [building.to_dict() for building in self.buildings[Team.BLUE].values()]
-        redBuildings = [building.to_dict() for building in self.buildings[Team.RED].values()]          
-        if redBuildings == []:
-            self.get_previous_state()
+        redBuildings = [building.to_dict() for building in self.buildings[Team.RED].values()]    
+
+        if redBuildings == []: #if red loses
+            self.get_previous_state(Team.RED) #set health == 0
             redBuildings = self.previousBuildingsRed
         else:
             self.save_previous_state(blueBuildings, redBuildings)
-        if blueBuildings == []:
-            self.get_previous_state()
+
+        if blueBuildings == []: #if blue loses
+            self.get_previous_state(Team.BLUE) #set health == 0
             blueBuildings = self.previousBuildingsBlue
         else:
             self.save_previous_state(blueBuildings, redBuildings)
