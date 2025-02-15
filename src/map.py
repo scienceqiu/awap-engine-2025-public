@@ -46,6 +46,11 @@ class Map:
 
         self.blue_castle_loc = blue_castle_loc
         self.red_castle_loc = red_castle_loc
+        self.castle_locs = {
+            Team.RED : red_castle_loc,
+            Team.BLUE : blue_castle_loc,
+        }
+
         if not self.in_bounds(*blue_castle_loc) or not self.in_bounds(*red_castle_loc):
             raise GameException('Given main castle locations invalid')
 
