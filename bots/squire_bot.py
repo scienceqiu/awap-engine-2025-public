@@ -32,7 +32,7 @@ class BotPlayer(Player):
         ally_buildings = rc.get_buildings(team)
         for building in ally_buildings:
             if building.type == BuildingType.MAIN_CASTLE:
-                ally_castle_id = rc.get_id_from_building(building)[0]
+                ally_castle_id = rc.get_id_from_building(building)[1]
                 break
 
         enemy = rc.get_enemy_team()
@@ -41,7 +41,7 @@ class BotPlayer(Player):
         enemy_buildings = rc.get_buildings(enemy)
         for building in enemy_buildings:
             if building.type == BuildingType.MAIN_CASTLE:
-                enemy_castle_id = rc.get_id_from_building(building)[0]
+                enemy_castle_id = rc.get_id_from_building(building)[1]
                 break
 
         enemy_castle = rc.get_building_from_id(enemy_castle_id)
