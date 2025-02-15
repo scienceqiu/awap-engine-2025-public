@@ -1234,9 +1234,8 @@ class RobotController:
             return False
         
         #is the healer_unit a healer?
-        if healer_unit.type != UnitType.LAND_HEALER and healer_unit.type != UnitType.WATER_HEALER:
+        if healer_unit.type not in self.__game_state.HEALERS:
             return False
-
 
         # has unit attacked this turn?
         if healer_unit.turn_actions_remaining <= 0:
