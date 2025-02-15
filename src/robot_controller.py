@@ -1082,7 +1082,7 @@ class RobotController:
         
 
 
-    def explore_for_attack(self, explorer_unit_id: int, explore_building_id: int, target_unit_id: int):
+    def explore_for_attack(self, t_unit_id: int, explore_building_id: int, target_unit_id: int):
         '''
         Increases target unit strength by 2 (including those that originally has damage of 0)
         
@@ -1281,8 +1281,8 @@ class RobotController:
         #unit actions per turn decrement
         healer_unit.turn_actions_remaining -= 1
 
-        #heal
-        target_unit.health = max(target_unit.type.health, target_unit.health + healer_unit.type.heal_amount)
+        #heal, can only heal until full health
+        target_unit.health = min(target_unit.type.health, target_unit.health + healer_unit.type.heal_amount)
     
 
     '''
