@@ -177,7 +177,7 @@ class UnitType (Enum):
 
 
 
-    GALLEY = (10, 1, 1, 1, 1, 1, 1, 1, 0, 0, [BuildingType.PORT], [Tile.WATER, Tile.BRIDGE])
+    GALLEY = (15, 3, 1, 1, 1, 2, 1, 1, 0, 0, [BuildingType.PORT], [Tile.WATER, Tile.BRIDGE])
 
     EXPLORER = (1, 10, 0, 1, 0, 0, 1, 2, 0, 0, [BuildingType.MAIN_CASTLE], [Tile.GRASS, Tile.SAND, Tile.BRIDGE, Tile.MOUNTAIN, Tile.WATER])
 
