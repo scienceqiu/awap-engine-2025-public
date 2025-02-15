@@ -681,27 +681,26 @@ class RobotController:
         attacking_unit.turn_actions_remaining -= 1
 
         #damage opponent's units
-        dead_units = [] #indices to delete
-        for i in range(len(opponent_units_hit)):
+        i = 0
+        while i < len(opponent_units_hit):
             unit_id_hit = opponent_units_hit[i]
             #if opponent unit killed, then delete it from the list because they cannot retaliate
             if self.__game_state.damage_unit(unit_id_hit, attacking_unit.damage):
-                dead_units.append(i) #delete it here to not mess up the indexing
-
-        for i in dead_units:
-            del opponent_units_hit[i]
+                del opponent_units_hit[i] #delete it here to not mess up the indexing
+                i -= 1
+            i += 1
+            
 
 
         #damage opponent's buildings
-        dead_buildings = [] #indices to delete
-        for i in range(len(opponent_buildings_hit)):
+        i = 0
+        while i < len(opponent_buildings_hit): #len dynamically changes
             building_id_hit = opponent_buildings_hit[i]
             #if opponent building defeated, then delete from the list because they cannot retaliate
             if self.__game_state.damage_building(building_id_hit, attacking_unit.damage):
-                dead_buildings.append(i)
-
-        for i in dead_buildings:
-            del opponent_buildings_hit[i]
+                del opponent_buildings_hit[i]
+                i -= 1
+            i += 1
 
 
 
@@ -713,6 +712,10 @@ class RobotController:
             if enemy_unit is None:
                 print('unit_attack_location(): invalid enemy unit id')
                 return False
+            
+            #if attacking unit is out of range of retaliation, move on
+            if self.get_chebyshev_distance(attacking_unit.x, attacking_unit.y, enemy_unit.x, enemy_unit.y) > enemy_unit.attack_range:
+                continue
 
             if self.__game_state.damage_unit(attacking_unit_id, enemy_unit.defense):
                 return True #if killed, then simply return
@@ -725,6 +728,10 @@ class RobotController:
             if enemy_building is None:
                 print('unit_attack_location(): invalid enemy building id')
                 return False
+            
+            #if the attacking building is out of range of retaliation, move on
+            if self.get_chebyshev_distance(attacking_unit.x, attacking_unit.y, enemy_building.x, enemy_building.y) > enemy_building.attack_range:
+                continue
 
             if self.__game_state.damage_unit(attacking_unit_id, enemy_building.defense):
                 return True #if killed, then simply return
@@ -1075,7 +1082,7 @@ class RobotController:
         
 
 
-    def explore_for_attack(self, explorer_unit_id: int, explore_building_id: int, target_unit_id: int):
+    def explore_for_attack(self, t_unit_id: int, explore_building_id: int, target_unit_id: int):
         '''
         Increases target unit strength by 2 (including those that originally has damage of 0)
         
@@ -1274,8 +1281,8 @@ class RobotController:
         #unit actions per turn decrement
         healer_unit.turn_actions_remaining -= 1
 
-        #heal
-        target_unit.health = max(target_unit.type.health, target_unit.health + healer_unit.type.heal_amount)
+        #heal, can only heal until full health
+        target_unit.health = min(target_unit.type.health, target_unit.health + healer_unit.type.heal_amount)
     
 
     '''
@@ -1326,7 +1333,10 @@ class RobotController:
 
         # Apply penalties
         self.__game_state.balance[self.get_enemy_team()] *= GameConstants.RAT_OPPONENT_FARM_DAMAGE_MULTIPLIER
+        self.__game_state.balance[self.get_enemy_team()] //= 1 #floor it to keep integers
+
         self.__game_state.balance[self.__team] *= GameConstants.RAT_OWN_FARM_DAMAGE_MULTIPLIER
+        self.__game_state.balance[self.__team] //= 1 #floor balance to keep integer
 
         # Disband the Rat after effect is applied
         self.disband_unit(rat_id)
