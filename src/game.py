@@ -78,6 +78,7 @@ class Game:
         self.replay.append(turn_data)
 
     def export_replay(self, filename: str):
+        self.replay.pop()
         """Export the replay object to a JSON file with the winner at the top level."""
         replay_data = {
             "ID": str(uuid.uuid4()),
