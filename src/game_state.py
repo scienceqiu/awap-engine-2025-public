@@ -359,7 +359,7 @@ class GameState:
             return False
 
         #add to balance
-        self.balance[team] += unit.type.cost * GameConstants.UNIT_SELL_DISCOUNT
+        self.balance[team] += (unit.type.cost * GameConstants.UNIT_SELL_DISCOUNT) // 1
 
         #remove from units list
         self.delete_unit(team, unit_id)
@@ -382,7 +382,7 @@ class GameState:
             return False
 
         #add to balance
-        self.balance[team] += building.type.cost * GameConstants.UNIT_SELL_DISCOUNT
+        self.balance[team] += (building.type.cost * GameConstants.UNIT_SELL_DISCOUNT) // 1 #floor so no fractional balances
 
         #remove from units list
         self.delete_building(team, building_id)

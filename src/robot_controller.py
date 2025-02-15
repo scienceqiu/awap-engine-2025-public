@@ -729,7 +729,7 @@ class RobotController:
                 print('unit_attack_location(): invalid enemy building id')
                 return False
             
-            #if the attacking unit is out of range of retaliation, move on
+            #if the attacking building is out of range of retaliation, move on
             if self.get_chebyshev_distance(attacking_unit.x, attacking_unit.y, enemy_building.x, enemy_building.y) > enemy_building.attack_range:
                 continue
 
@@ -1333,7 +1333,10 @@ class RobotController:
 
         # Apply penalties
         self.__game_state.balance[self.get_enemy_team()] *= GameConstants.RAT_OPPONENT_FARM_DAMAGE_MULTIPLIER
+        self.__game_state.balance[self.get_enemy_team()] //= 1 #floor it to keep integers
+
         self.__game_state.balance[self.__team] *= GameConstants.RAT_OWN_FARM_DAMAGE_MULTIPLIER
+        self.__game_state.balance[self.__team] //= 1 #floor balance to keep integer
 
         # Disband the Rat after effect is applied
         self.disband_unit(rat_id)
