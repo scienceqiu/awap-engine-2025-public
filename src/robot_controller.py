@@ -130,7 +130,7 @@ class RobotController:
         '''
         Returns the (building ID, building team) from a given building
         '''
-        return building.id, building.team
+        return building.team, building.id
 
         
 
