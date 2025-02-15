@@ -40,3 +40,16 @@ Equivalently, running the above command without the render flag does not render 
 
 
 To create a bot, add a new file to `/bots`.
+
+
+
+#### To pull updates, run:
+
+`git remote add upstream https://github.com/acm-cmu/awap-engine-2025-public.git`
+
+Run the above command to add the original updated repository if you have not done this already.
+
+`git rebase upstream/main`
+
+Run the above command to install current patches and bug fixes locally.
+
