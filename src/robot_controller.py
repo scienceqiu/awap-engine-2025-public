@@ -1082,7 +1082,7 @@ class RobotController:
         
 
 
-    def explore_for_attack(self, t_unit_id: int, explore_building_id: int, target_unit_id: int):
+    def explore_for_attack(self, explorer_unit_id: int, explore_building_id: int, target_unit_id: int):
         '''
         Increases target unit strength by 2 (including those that originally has damage of 0)
         
