@@ -4,9 +4,13 @@ Welcome to AWAP 2025!
 
 ## Installation
 
-`pip install -r requirements.txt`
+We use python version >= 3.9
+<br>
+<br>
 
-This installs pygame for visualization purposes
+This installs pygame for visualization purposes:
+
+`pip install -r requirements.txt`
 
 ## Quick Start
 
