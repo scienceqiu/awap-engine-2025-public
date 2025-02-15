@@ -1216,9 +1216,10 @@ class RobotController:
             print("can_heal_unit(): invalid attacking_unit_id")
             return False
         
-        if target_unit_id not in self.__game_state.units[self.get_enemy_team()]:
+        if target_unit_id not in self.__game_state.units[self.__team]:
             print("can_heal_unit(): invalid target_unit_id")
             return False
+
 
 
         healer_unit = self.__game_state.get_unit_from_id(healer_id)
@@ -1260,7 +1261,7 @@ class RobotController:
             print("can_heal_unit(): invalid attacking_unit_id")
             return False
         
-        if target_unit_id not in self.__game_state.units[self.get_enemy_team()]:
+        if target_unit_id not in self.__game_state.units[self.__team]:
             print("can_heal_unit(): invalid target_unit_id")
             return False
 
