@@ -1327,11 +1327,3 @@ class RobotController:
         # Disband the Rat after effect is applied
         self.disband_unit(rat_id)
         return True
-
-    def auto_harm_farm(self):
-        '''
-        Automatically triggers all Rats on the team to apply farming penalties.
-        '''
-        for unit in self.__game_state.units[self.__team].values():
-            if unit.type == UnitType.RAT:
-                self.harm_farm(unit.id)
