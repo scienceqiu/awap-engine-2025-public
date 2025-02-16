@@ -73,6 +73,7 @@ class Game:
         self.map = self.game_state.map.to_dict()
 
         self.turn_limit = 3000
+        self.winner = None 
 
     def record_turn(self, turn_data: Dict):
         """Record data of the current turn into the replay."""
@@ -89,7 +90,7 @@ class Game:
                 "changed-turns": self.game_state.changed_turns,
                 "changed-maps": self.game_state.changed_maps
             },
-            "winner_color": self.replay[0].get("winner_color", "None"),
+            "winner_color": self.winner, 
             "replay": self.replay
         }
         with open(filename, 'w') as f:
@@ -143,12 +144,12 @@ class Game:
         # check if one main castle is destroyed while the other is not (definitive win)
         if blue_lose and not red_lose:
             print('RED WINS')
-            self.replay[0]["winner_color"] = "RED"
+            self.winner = "RED"
             
             return Team.RED  # Red main castle still standing
         elif red_lose and not blue_lose:
             print('BLUE WINS')
-            self.replay[0]["winner_color"] = "BLUE"
+            self.winner = "BLUE"
             return Team.BLUE  # Blue main castle still standing
 
         # turn limit reached case:
@@ -162,7 +163,7 @@ class Game:
                 winner = Team.BLUE if blue_castle_health > red_castle_health else Team.RED
                 winner_color = "BLUE" if winner == Team.BLUE else "RED"
                 print(f'{winner_color} WINS')
-                self.replay[0]["winner_color"] = winner_color
+                self.winner  = winner_color
                 return winner
 
         # breaks tie by highest (total balance + tower cost + unit cost)
@@ -181,16 +182,16 @@ class Game:
 
         if total_balance[Team.BLUE] > total_balance[Team.RED]:
             print('BLUE WINS')
-            self.replay[0]["winner_color"] = "BLUE"
+            self.winner  = "BLUE"
             return Team.BLUE  # highest balance wins
         elif total_balance[Team.BLUE] < total_balance[Team.RED]:
             print('RED WINS')
-            self.replay[0]["winner_color"] = "RED"
+            self.winner  = "RED"
             return Team.RED  # highest balance wins
 
         # Red arbitrarily wins because Red always moves second
         print('RED WINS')
-        self.replay[0]["winner_color"] = "RED"
+        self.winner  = "RED"
         return Team.RED
 
 
