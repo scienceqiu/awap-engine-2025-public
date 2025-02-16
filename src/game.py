@@ -1,5 +1,5 @@
 ''' Execution of the actual game; starts the game; keeps track of state informations'''
-
+import traceback
 from typing import Optional
 
 import importlib.util
@@ -52,18 +52,26 @@ class Game:
         try:
             blue_bot_name = os.path.basename(blue_path).split(".")[0]
             self.blue_player: Player = import_file(blue_bot_name, blue_path).BotPlayer(copy.deepcopy(self.map))
-        except:
+        except Exception as e:
+            print(f"Error initializing blue bot: {e}")
             blue_bot_name = "blue"
             self.blue_failed_init = True
+            
+            traceback.print_exc()
+
+            
 
 
         self.red_failed_init = False
         try:
             red_bot_name = os.path.basename(red_path).split(".")[0]
             self.red_player: Player = import_file(red_bot_name, red_path).BotPlayer(copy.deepcopy(self.map))
-        except:
+        except Exception as e:
+            print(f"Error initializing red bot: {e}")
             red_bot_name = "red"
             self.red_failed_init = True
+            
+            traceback.print_exc()
 
 
         #initialize controller
@@ -253,9 +261,17 @@ class Game:
             return None
         elif self.blue_failed_init:
             print("Blue failed to initialize. Red wins.")
+            self.replay.append({})
+            self.replay.append({})
+            self.replay[1]["winner_color"] = "RED"
+            self.export_replay(self.output_path)
             return Team.RED
         elif self.red_failed_init:
             print("Red failed to initialize. Blue wins.")
+            self.replay.append({})
+            self.replay.append({})
+            self.replay[1]["winner_color"] = "BLUE"
+            self.export_replay(self.output_path)
             return Team.BLUE
 
 
