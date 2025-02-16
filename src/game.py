@@ -219,9 +219,11 @@ class Game:
         
         if not blue_success: # Blue failed
             print('RED WINS')
+            self.winner = "RED"
             return Team.RED
         if not red_success: # Red failed
             print('BLUE WINS')
+            self.winner = "BLUE"
             return Team.BLUE
         
         

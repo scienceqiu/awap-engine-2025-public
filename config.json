@@ -1,9 +1,9 @@
 {
     "players": [
         {
-            "blue": "attack_bot_v1",
-            "red": "squire_bot"
+            "blue": "bot2",
+            "red": "bot1"
         }
     ],
-    "map": "scenic_backdrop"
+    "map": "big_map"
 }
