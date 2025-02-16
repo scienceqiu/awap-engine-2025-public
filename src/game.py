@@ -72,7 +72,7 @@ class Game:
         self.replay = []  # To store turn-by-turn replay information
         self.map = self.game_state.map.to_dict()
 
-        self.turn_limit = 8000
+        self.turn_limit = 3000
 
     def record_turn(self, turn_data: Dict):
         """Record data of the current turn into the replay."""
