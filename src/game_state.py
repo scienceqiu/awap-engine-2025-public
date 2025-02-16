@@ -281,6 +281,7 @@ class GameState:
         Precondition of safety for team/unit_id
         '''
         #can place another unit at that location
+
         self.unit_placeable_map[self.units[team][unit_id].x][self.units[team][unit_id].y] = True
         #delete from units list
         del self.units[team][unit_id]
@@ -318,6 +319,9 @@ class GameState:
         if self.units[team][unit_id].health <= 0:
             #remove unit from game
             self.delete_unit(team, unit_id)
+            return True  # Unit was killed
+
+        return False  # Unit is still alive
 
 
     def damage_building(self, building_id: int, dmg: int) -> bool:
