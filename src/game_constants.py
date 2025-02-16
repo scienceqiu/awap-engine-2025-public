@@ -164,7 +164,7 @@ class UnitType (Enum):
     SWORDSMAN = (10, 4, 1, 1, 3, 3, 1, 1, 0, 0, None, None)
     # Land meele, high health and defense
     DEFENDER = (15, 3, 1, 1, 1, 2, 1, 1, 0, 0, None, None)
-    # The catapult, large ranged attack (6) unit that deals small damage
+    # The catapult, large ranged attack (4) unit that deals small damage
     CATAPULT = (10, 4, 4, 1, 1, 1, 1, 1, 0, 0, None, None)
 
     # Water meele tier 1
