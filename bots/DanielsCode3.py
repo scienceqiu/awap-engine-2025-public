@@ -96,16 +96,17 @@ class BotPlayer(Player):
 
         # rng = random.randint(0, 3);
         if not self.prev_spawn:
-            healer_cost= UnitType.LAND_HEALER_1.cost
-            while balance >= healer_cost:
-                if rc.can_spawn_unit(UnitType.LAND_HEALER_1, self.main_castle_id):
-                    rc.spawn_unit(UnitType.LAND_HEALER_1, self.main_castle_id)
-                    balance -= healer_cost
-                    self.prev_spawn = not self.prev_spawn
-                else:
-                    break
+            if balance>3: # this is sus, idk if its good
+                healer_cost= UnitType.LAND_HEALER_1.cost
+                while balance >= healer_cost:
+                    if rc.can_spawn_unit(UnitType.LAND_HEALER_1, self.main_castle_id):
+                        rc.spawn_unit(UnitType.LAND_HEALER_1, self.main_castle_id)
+                        balance -= healer_cost
+                        self.prev_spawn = not self.prev_spawn
+                    else:
+                        break
         else:
-            if balance>3:
+            if balance>2:
                 warrior_cost = UnitType.WARRIOR.cost
                 while balance >= warrior_cost:
                     if rc.can_spawn_unit(UnitType.WARRIOR, self.main_castle_id):
@@ -133,7 +134,7 @@ class BotPlayer(Player):
 
         ally_units = rc.get_units(self.ally_team)
         for unit in ally_units:
-            if unit.type==UnitType.WARRIOR:
+            if unit.type==UnitType.WARRIOR or unit.type == UnitType.KNIGHT:
                 self.attack(rc, unit)
             else:
                 self.heal(rc, unit)
