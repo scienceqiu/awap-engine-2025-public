@@ -165,7 +165,7 @@ class UnitType (Enum):
     # Land meele, high health and defense
     DEFENDER = (15, 3, 1, 1, 1, 2, 1, 1, 0, 0, None, None)
     # The catapult, large ranged attack (6) unit that deals small damage
-    CATAPULT = (10, 4, 6, 1, 1, 2, 1, 1, 0, 0, None, None)
+    CATAPULT = (10, 4, 4, 1, 1, 1, 1, 1, 0, 0, None, None)
 
     # Water meele tier 1
     SAILOR = (10, 1, 1, 1, 1, 1, 1, 1, 0, 0, [BuildingType.PORT], [Tile.WATER, Tile.BRIDGE])
