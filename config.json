@@ -1,9 +1,8 @@
 {
     "players": [
         {
-            "blue": "bot2",
+            "blue": "squire_bot",
             "red": "bot1"
         }
     ],
-    "map": "big_map"
-}
+    "map": "justgrass"}
