@@ -128,7 +128,6 @@ class BotPlayer(Player):
     def play_turn(self, rc: RobotController):
 
         self.update_globals(rc)
-        self.spawnStuff(rc)
 
 
 
@@ -139,3 +138,4 @@ class BotPlayer(Player):
             else:
                 self.heal(rc, unit)
             self.move(rc, unit)
+        self.spawnStuff(rc)
